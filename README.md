@@ -57,7 +57,7 @@ The alternative hypothesis is interchangably written as H1 or Ha, your professor
 The null hypothesis in the context of econometric modeling means that there was no effect in your Y and Beta1 variables. Your alternative will be the opposite where there will be an effect on Y with your Beta1 variable. Ultimately, you want your alternative hypothesis to be true. It is important to note here (and you may rememnber this from introduction to statistics), but we do not say "we accept the null hypothesis". There is two ways that we can phrase this 
 1. We reject the null hypothesis - The alternative hypothesis is true
 2. We **fail** to reject the null hypothesis - the null hypothesis is true
-3. 
+
 Again, for a basic econometric model we are generally going to aim to reject the null hypothesis, as no matter what we want some result in one way or another.
 
 While we do aim to see some effect of a variable, this is **not** necessarily a bad thing. In the context of research, anything and everything is valuable. Sometimes, there being no effect is good, and can contribute to the greater knowledge of the topic equally the same as there being an effect. To summarize, theres really no right or wrong answer, results are results, don't aim to get one thing or another just aim to get **information**.
