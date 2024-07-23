@@ -1,6 +1,8 @@
 # Econometrics-R-Introduction
 Hello there! If you are reading this, chances are you are starting your undergraduate course in econometrics. I created this as a high level overview for implimenting R into your econometric models and studies. This guide was specifically designed for students at Drury University taking ECON 375, but generally should have a good overview for what to expect and know whenever you take any econometrics undergraduate course. This is best assisted with the textbook "Using R for Introductory Econometrics" by Florian Heiss. Its about $27 on Amazon and I highly recommend it if you are starting out. However, hopefully I have done a good enough job here that you do not need this. If you have any further more specific questions or believe another topic should be added to this page, please email me at kschertzer@drury.edu. 
 
+Attached you will find a sample dataset to work with as you learn. This is the same one that is going to be referenced in the code, so if you would like to follow along I recommend downloading it. I am going to have a section in here that covers where to find datasets and what to look for, so if you don't want to use this you will have options down there. 
+
 ## Table of Contents
 1. [Introduction](#Introduction)
 2. Basic Statistical Concepts
