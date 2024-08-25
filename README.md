@@ -1,5 +1,5 @@
 # Econometrics-R-Introduction
-Hello there! If you are reading this, chances are you are starting your undergraduate course in econometrics. I created this as a high level overview for implimenting R into your econometric models and studies. This guide was specifically designed for students at Drury University taking ECON 375, but generally should have a good overview for what to expect and know whenever you take any econometrics undergraduate course. This is best assisted with the textbook "Using R for Introductory Econometrics" by Florian Heiss. Its about $27 on Amazon and I highly recommend it if you are starting out. However, hopefully I have done a good enough job here that you do not need this. If you have any further more specific questions or believe another topic should be added to this page, please email me at kschertzer@drury.edu. 
+Hello there! If you are reading this, chances are you are starting your undergraduate course in econometrics. I created this as a high level overview for implimenting R into your econometric models and studies. This guide was specifically designed for students at Drury University taking ECON 375, but generally should have a good overview for what to expect and know whenever you take any econometrics undergraduate course. This is best assisted with the textbook "Using R for Introductory Econometrics" by Florian Heiss. Its about $27 on Amazon and I highly recommend it if you are starting out. However, hopefully I have done a good enough job here that you do not need this. If you have any further more specific questions or believe another topic should be added to this page, please email me at kschertzer@drury.edu. Similarly, you should email me if you feel like something is incorrect. It wouldn't shock me if I screwed something up in the process of writing this, and I am always looking to improve :)  
 
 Attached you will find a sample dataset to work with as you learn. This is the same one that is going to be referenced in the code, so if you would like to follow along I recommend downloading it. I am going to have a section in here that covers where to find datasets and what to look for, so if you don't want to use this you will have options down there. 
 
@@ -64,13 +64,49 @@ While we do aim to see some effect of a variable, it is **not** necessarily a ba
 
 While this is pretty much the majoriy of the statistical knowledge needed to learn the rest, I **highly** recommend reviewing statistics at a high level before you get too far into the course. The more comfortable you are at statistics the easier this will be, as regression analysis is built off of mathematical and statistical theory. However, again, you really don't need to remember more than this. 
 
------------------------------WORK IN PROGRESS --------------------------------------------
 
 ##Variable Types
+
 When looking at your data you are going to be dealing with different types of variables, its important that you know these variables. It'll help you during your analysis later on if you know how these work right now. This will also make your data manipulation go a lot smoother in the long run.
 1. Continuous variables - These are variables that can hold any value in a given range. A basic example of this is things like income, price, height, etc.
 2. Discrete variables - these take specific values and cannot be between these given points, examples of this are number of children, number of cars, number of people in a classroom, etc.
-3. Nominal variables
+3. Nominal variables - Represents categories with no distinctual order. For example, this could be gender, business type, or race. To be more specific, lets say were analyzing race. In a data codebook, for a variable called, lets say, "race", it may have values ranging from 1-5 with 1: White, 2: Black/AA, 3: Hispanic, 4: Asian/PI, 5: Other. In this case in your dataset you will see the numbers 1-5 but you will notice that they don't necessarily have a heirarchical order.
+4. Ordinal Variables - Numerical variables hwere the intervals between values are meaningful and consistent but has no true zero point, meaning that the ratio between them is not meaningful. For example, this would be things like temperature and dates.
+5. Binary variables - These variables are a subcategory of nominal variables that have only two categories, most commonly yes (1) and no (0). A binary variable could also be any two values that represent one thing or another, but common practice is to make these variables 0 for the null answer and 1 for the alternative answer. Binary variables can laso be things like gender where you have 0: Male and 1: Female, really any response that can only have two values is considered binary. It is really important to have some of these in your dataset as they are the easiest to manipulate and deal with.
+6. Count Variables - These are a specific discrete variable where it represents the number of occurences of an event within a fixed period or fixed space. This can be things such as visits to a certain business, number of transactions, etc
+
+There are many other kinds of variables but I believe that these are going to be the main ones you are dealing with, and most can still fit under one of these categories. 
+
+
+##Selecting a Research Topic
+
+If you are enrolled in DU's 375 then about 40% of your grade is going into your research paper. This may potentially be an unpopular opinion, but I think what you research can make or break your paper at the end of the semester. You can definitely get an 'A' paper with any topic, but there are some that may be easier than others. Here are some strategies I recommend before finalizing a research topic. 
+
+1. Look at the world around you: Take one week and observe transactions in society, or maybe even problems you deal with. Think about how much you are paying for a good or how much you are valuing it. How are you paying for it? What kind of people would be buying this good or service? Some of the best topics in economics come from a real world issue that someone saw and decided to tackle. At the Federal Reserve, this is how most of our research is done.
+2. Research ahead of time: You will have to have supporting evidence besides just your math (such as articles or other academic papers). There are some topics that just haven't been researched enough that it would be good for this specific class. For example, recently in 2024 marijuana was a popular topic, but the issue is it has recently been legalized in a lot of states, and many of the states that have had it legalized haven't put a ton of research into it. As a result, there is not only not a lot of research available but there isn't data created for it yet. This makes it a much harder topic because you have to jump through loopholes to get information outside of the surface level information
+3. Look for datasets: Publically available data is shockingly hard to come by, and finding datasets that are good to use for just a semester of work is also hard. Personally, I had to make my own dataset to make my topic work, and I know a couple of other people have had to do this too. DON'T CHOOSE SOMETHING THAT DOESN'T HAVE PUBLIC DATA. Marijuana is another great example of a topic that isn't very good because of this issue. There are vary few public datasets available that have in depth questions about marijuana, so its hard to research. Look online for datasets before finalizing a topic.
+4. Think about how much work you want to put into this paper: There are some topics that are going to naturally be harder than others. If you have a loaded schedule and can only work on this paper 1-2 hours per week, then picking a harder topic may not be fpor you. On the other hand, if your goal is to go to graduate school for economics and you want to put 10+ hours into this paper every week, your options open up a lot more.
+
+Another good way to find a research topic is by looking at what has already been done. econpapers.repec.org has a lot of topics underneath a variety of JEL codes, there is just about every single topic imaginable so the sky is the limit. Another fast and easy way is to ask ChatGPT for some ideas, personally I've done this in the past and it has done a pretty good job coming up with ideas. If you do this you can also have it give your journals and papers for you to look at to see if its a feasible topic for you. 
+
+
+##Downloading and Installing R Studio 
+You are going to have to download both the actual program R and the IDE R studio. An IDE is a program that lets you host data and your code into one compiled place. There are other options like VSC, but for purposes of following what 375 does we are going to be using R studio. If you have a preference of what you use, and you will know if you do, just go ahead and use that. You can pretty much skip this part and continue onto the next section.
+
+Go to this website: https://posit.co/download/rstudio-desktop/
+
+You will first install R and then R studio. Installing R is pretty straightfoward but for installing R Studio, make sure you install the right version for your computer. For setup just allow all of the general settings that it gives you unless your professor specifically instructs you to change something. 
+
+-----------------------------WORK IN PROGRESS --------------------------------------------
+
+##Selecting your data
+
+There are a few options that you have when looking for a dataset. The best one that I have seen, and the easiest one, is by going on IPUMS and downloading a dataset that way (for how to download please jump down to the IPUMS section below this one for help with that). However, there are a few datasets online already that you can use. One of the best ways to find a dataset is by going to the Federal Reserve Bank and looking at what publications are done there. Many government organizations have datasets that are publically available for use. Once again, ChatGPT is also good for coming up with public datasets based on your topic. I actually did this in Regression Analysis at DU and it worked perfectly. 
+
+When looking for a dataset you should be looking for a few things. 
+1. Number of observations: Aim for around 5k-30k, 1k is the minimum and there is not really any maximum, but making some of your visualizations will be hard with that many observations depending on your computer
+2. around 15-20 demographic variables: you want things like age, sex, gender, sexuality, income, etc. No matter the topic you need this information, so try to select a dataset that has too many rather than too few. You could be leaving some paths open that you will want to close without this information.
+
 
 
 
