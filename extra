@@ -1,0 +1,119 @@
+# # Cryptocurrency and Reddit Data Aggregation using Coinbase API
+# This notebook fetches cryptocurrency data using the Coinbase API and Reddit posts (with comments) using the Reddit API.
+# Finally, it merges both datasets on the post date.
+
+import requests
+import praw
+import pandas as pd
+from datetime import datetime
+
+# ## 1. Coinbase API Setup
+# ### Function to Fetch Cryptocurrency Data from Coinbase
+def fetch_crypto_data_coinbase(crypto_pair, start_date, end_date):
+    """
+    Fetch historical cryptocurrency data from Coinbase API.
+    :param crypto_pair: The trading pair (e.g., 'BTC-USD', 'ETH-USD').
+    :param start_date: Start date in YYYY-MM-DD format.
+    :param end_date: End date in YYYY-MM-DD format.
+    :return: A DataFrame with historical prices.
+    """
+    url = f"https://api.exchange.coinbase.com/products/{crypto_pair}/candles"
+    params = {
+        "start": start_date,
+        "end": end_date,
+        "granularity": 86400  # Daily granularity (86400 seconds)
+    }
+    response = requests.get(url, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        # Coinbase API returns data as [time, low, high, open, close, volume]
+        df = pd.DataFrame(data, columns=["timestamp", "low", "high", "open", "close", "volume"])
+        df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s").dt.date  # Convert to date format
+        return df.sort_values(by="timestamp")
+    else:
+        print(f"Error fetching data for {crypto_pair}: {response.status_code}")
+        return pd.DataFrame()
+
+# ## 2. Reddit API Setup
+# ### Reddit API Credentials
+reddit = praw.Reddit(
+    client_id="uVfEGCnis2jFAj6qaDp6vQ",  # Inserted from image
+    client_secret="4hkoTbYETXcBswn8Z-MDbaVXD47yQ",  # Inserted from image
+    user_agent="Crypto Sentiment Analysis FRB by /u/JicamaAffectionate62"
+)
+
+# ### Function to Fetch Reddit Posts and Comments
+def fetch_reddit_posts_and_comments(keyword, subreddit="all", time_filter="year"):
+    posts = []
+    for submission in reddit.subreddit(subreddit).search(keyword, sort="new", time_filter=time_filter):
+        post = {
+            "date": datetime.fromtimestamp(submission.created_utc).date(),
+            "post_id": submission.id,
+            "title": submission.title,
+            "selftext": submission.selftext,
+            "score": submission.score,
+            "num_comments": submission.num_comments,
+            "link": submission.url
+        }
+        # Fetch the top-level comments
+        submission.comments.replace_more(limit=0)
+        comments = [comment.body for comment in submission.comments.list()[:10]]  # Fetch top 10 comments
+        post["comments"] = " || ".join(comments)
+        posts.append(post)
+    return pd.DataFrame(posts)
+
+# ## 3. Fetch Data for Multiple Coins
+# Define cryptocurrency trading pairs and search keywords
+crypto_pairs = {
+    "Hawk_Tuah": "BTC-USD",  # Replace with the actual trading pair if known
+    "Caitlyn_Jenner_Coin": "ETH-USD",  # Replace with the actual trading pair
+    "Iggy_Azalea_Coin": "DOGE-USD",  # Replace with the actual trading pair
+}
+
+keywords = ["Hawk Tuah", "Caitlyn Jenner Coin", "Iggy Azalea Coin"]
+
+# ### Fetch and Save Cryptocurrency Data
+crypto_data = {}
+start_date = "2023-01-01"  # Adjust as needed
+end_date = datetime.today().strftime("%Y-%m-%d")
+
+for coin_name, trading_pair in crypto_pairs.items():
+    print(f"Fetching data for {coin_name}...")
+    crypto_data[coin_name] = fetch_crypto_data_coinbase(trading_pair, start_date, end_date)
+    if not crypto_data[coin_name].empty:
+        crypto_data[coin_name].to_csv(f"{coin_name}_crypto_data.csv", index=False)
+        print(f"Data for {coin_name} saved to CSV.")
+
+# ### Fetch and Save Reddit Data
+reddit_data = pd.DataFrame()
+for keyword in keywords:
+    print(f"Fetching Reddit posts for {keyword}...")
+    df = fetch_reddit_posts_and_comments(keyword)
+    df["coin"] = keyword
+    reddit_data = pd.concat([reddit_data, df], ignore_index=True)
+reddit_data.to_csv("reddit_data.csv", index=False)
+print("Reddit data saved to 'reddit_data.csv'.")
+
+# ## 4. Merge Reddit and Cryptocurrency Data
+# ### Function to Merge Data
+def merge_datasets(crypto_df, reddit_df):
+    reddit_df["date"] = pd.to_datetime(reddit_df["date"]).dt.date  # Ensure `date` is in `date` format
+    merged = pd.merge(reddit_df, crypto_df, left_on="date", right_on="timestamp", how="inner")
+    return merged
+
+# ### Merge Data for Each Coin
+merged_data = pd.DataFrame()
+for coin_name, crypto_df in crypto_data.items():
+    if not crypto_df.empty:
+        print(f"Merging data for {coin_name}...")
+        coin_reddit_data = reddit_data[reddit_data["coin"].str.contains(coin_name.replace("_", " "), case=False)]
+        merged_df = merge_datasets(crypto_df, coin_reddit_data)
+        merged_data = pd.concat([merged_data, merged_df], ignore_index=True)
+
+# Save the merged dataset
+merged_data.to_csv("merged_reddit_crypto_data.csv", index=False)
+print("Merged dataset saved to 'merged_reddit_crypto_data.csv'.")
+
+# ## Summary
+# This notebook has collected cryptocurrency data using the Coinbase API, Reddit posts (with comments) using the Reddit API, and merged them into a single dataset for further analysis.
